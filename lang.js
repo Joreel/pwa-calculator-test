@@ -56,6 +56,7 @@ i18next
 .init({
     resources,
     fallbackLng: 'fr',
+    lng: 'fr', // Set the default language
     debug: false
 }, (err, t) => {
     if (err) return console.error(err);
