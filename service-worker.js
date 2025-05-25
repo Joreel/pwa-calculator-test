@@ -1,9 +1,9 @@
-const CACHE_NAME = 'fiscal-calculator-v1';
+const CACHE_NAME = 'fisc36-calculator-v1';
 const FILES_TO_CACHE = [
   '/',
   '/index.html',
-  '/style.css',
-  '/script.js',
+  '/downsize.css',
+  '/app.js',
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png',

@@ -1,26 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <title>Fisc36</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-  <title>Fiscal Calculator</title>
+  <!-- Use of pico CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
+  <!-- Downsize standard pico CSS style -->
+  <link rel="stylesheet" href="downsize.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Fiscal Calculator</h1>
-    <label for="income">Income:</label>
-    <input id="income" type="number" />
-    <button onclick="calculate()">Calculate</button>
-    <p id="result"></p>
-  </div>
-
-  <script src="script.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
+  <main class="container" style="max-width: 300px;">
+    <h2>Fisc36</h2>
+    <form id="fiscForm">
+      <label>Exercice
+        <select><option>2025</option><option>2024</option></select>
+      </label>
+      <label>Valeur catalogue (€)
+        <input type="number" id="catalogValue" required>
+      </label>
+      <label>Première immatriculation
+        <input type="date">
+      </label>
+      <label>Moteur
+        <select id="engineType" required><option>Diesel</option><option>Essence</option><option>Électrique</option></select>
+      </label>
+      <label>CO2 (g/km)
+        <input type="number" id="co2" required>
+      </label>
+      <label>Premier jour
+        <input type="date">
+      </label>
+      <button type="submit">💶 Calculer</button>
+    </form>
+    <output id="result"></output>
+  </main>
+  <script src="app.js"></script>
 </body>
 </html>
