@@ -26,28 +26,48 @@
     <form id="fiscForm">
       <label>
         <span i18n-id="lbl_fiscal_year"></span>
-        <select><option>2025</option><option>2024</option></select>
+        <span aria-hidden="true" style="color: var(--pico-primary);">*</span>
+        <select>
+          <option>2025</option>
+          <option>2024</option>
+        </select>
+        <small>
+          <span aria-hidden="true" style="color: var(--pico-primary);">*</span> 
+          <span i18n-id="small_required_field"></span>
+        </small>
       </label>
       <label>
-        <span i18n-id="lbl_catalog_value"></span> 
-        <input type="number" id="catalogValue" required>
+        <span i18n-id="lbl_catalog_value"></span>
+        <span aria-hidden="true" style="color: var(--pico-primary);">*</span>
+        <input type="number" id="catalogValue" placeholder="0,00" required>
       </label>
       <label>
         <span i18n-id="lbl_first_reg"></span>
-        <input type="date">
+        <span aria-hidden="true" style="color: var(--pico-primary);">*</span>
+        <input type="date" required>
       </label>
       <label>
         <span i18n-id="lbl_engine"></span>
-        <select id="engineType" required><option>Diesel</option><option>Essence</option><option>Électrique</option></select>
+        <span aria-hidden="true" style="color: var(--pico-primary);">*</span>
+        <select id="engineType">
+          <option i18n-id="petrol"></option>
+          <option i18n-id="diesel"></option>
+          <option i18n-id="electric"></option>
+        </select>
       </label>
       <label>
         <span i18n-id="lbl_co2"></span>
-        <input type="number" id="co2" required>
+        <input type="number" id="co2" placeholder="0">
       </label>
       <label>
         <span i18n-id="lbl_first_day"></span>
         <input type="date">
       </label>
+      <label>
+        <span i18n-id="lbl_last_day"></span>
+        <input type="date">
+      </label>
+      
       <button i18n-id="btn_calculate" type="submit"></button>
     </form>
     <output id="result"></output>
