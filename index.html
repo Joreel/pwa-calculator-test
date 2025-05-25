@@ -13,30 +13,53 @@
 </head>
 <body>
   <main class="container" style="max-width: 300px;">
-    <h2>Fisc36</h2>
+    <!-- Navigation -->
+    <nav>
+      <h2 i18n-id="title">Fisc36</h2>
+      <!-- Language selector -->
+      <select id="languageSelect" aria-label="Select language" style="max-width: 78px;">
+        <option value="fr">FR</option>
+        <option value="nl">NL</option>
+      </select>
+    </nav>
+    <!-- Form -->
     <form id="fiscForm">
-      <label>Exercice
+      <label>
+        <span i18n-id="lbl_fiscal_year"></span>
         <select><option>2025</option><option>2024</option></select>
       </label>
-      <label>Valeur catalogue (€)
+      <label>
+        <span i18n-id="lbl_catalog_value"></span> 
         <input type="number" id="catalogValue" required>
       </label>
-      <label>Première immatriculation
+      <label>
+        <span i18n-id="lbl_first_reg"></span>
         <input type="date">
       </label>
-      <label>Moteur
+      <label>
+        <span i18n-id="lbl_engine"></span>
         <select id="engineType" required><option>Diesel</option><option>Essence</option><option>Électrique</option></select>
       </label>
-      <label>CO2 (g/km)
+      <label>
+        <span i18n-id="lbl_co2"></span>
         <input type="number" id="co2" required>
       </label>
-      <label>Premier jour
+      <label>
+        <span i18n-id="lbl_first_day"></span>
         <input type="date">
       </label>
-      <button type="submit">💶 Calculer</button>
+      <button i18n-id="btn_calculate" type="submit">💶 Calculer</button>
     </form>
     <output id="result"></output>
   </main>
+  
+  <!-- Translations with Polyglot.js -->
+  <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+  <script src="https://unpkg.com/i18next-browser-languagedetector/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+  <script src="lang.js"></script>
+
+  <!-- Actual calculation -->
   <script src="app.js"></script>
+  
 </body>
 </html>
