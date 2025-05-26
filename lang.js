@@ -2,6 +2,7 @@ const resources = {
     fr: {
       translation: {
         title: "Fisc36",
+        intro: "Calculez l'avantage de toute nature d'une voiture de société",
         lbl_fiscal_year: "Exercice d'imposition",
         lbl_catalog_value: "Valeur catalogue (€)",
         lbl_first_reg: "Première immatriculation",
@@ -14,12 +15,18 @@ const resources = {
         diesel: "Diesel",
         petrol: "Essence",
         electric: "Électrique",
-        result_text: "Avantage de toute nature estimé: €{{amount}}"
+        result_text: "Avantage de toute nature estimé: €{{amount}}",
+        small_footnote_created_by: "Fisc36 fut créé par ",
+        small_footnote_based_on: " et est basé sur la ",
+        small_footnote_official_doc_link: "https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avantages_toute_nature/voitures_de_societe",
+        small_footnote_official_doc: "documentation du SPF Finances",
+        small_footnote_source_code: "Le code source est disponible sur "
       }
     },
     nl: {
       translation: {
         title: "Fisc36",
+        intro: "Bereken het voordeel van alle aard van een bedrijfswagen",
         lbl_fiscal_year: "Aanslagjaar",
         lbl_catalog_value: "Cataloguswaarde (€)",
         lbl_first_reg: "Eerste inschrijving",
@@ -32,10 +39,16 @@ const resources = {
         diesel: "Diesel",
         petrol: "Benzine",
         electric: "Elektrisch",
-        result_text: "Voordeel van alle aard geschat op: €{{amount}}"
+        result_text: "Voordeel van alle aard geschat op: €{{amount}}",
+        small_footnote_created_by: "Fisc36 werd gemaakt door ",
+        small_footnote_based_on: " en is gebaseerd op de ",
+        small_footnote_official_doc_link: "https://financien.belgium.be/nl/ondernemingen/personeel_en_loon/voordelen_van_alle_aard/bedrijfswagens",
+        small_footnote_official_doc: "documentatie van de FOD Financiën",
+        small_footnote_source_code: "De broncode is beschikbaar op "
       }
     }
   };
+  // TODO Add German?
   
 function updateContent() {
     document.querySelectorAll('[i18n-id]').forEach(el => {
@@ -53,6 +66,8 @@ function updateContent() {
             el.textContent = translation;
         }
     });
+    // Update link to official documentation of calculation details
+    document.getElementById("doc_link").href = i18next.t('small_footnote_official_doc_link');
 }
     
 i18next

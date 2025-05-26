@@ -19,13 +19,15 @@
   <main class="container" style="max-width: 300px;">
     <!-- Navigation -->
     <nav>
-      <h2 i18n-id="title">Fisc36</h2>
+      <h1 i18n-id="title">Fisc36</h1>
       <!-- Language selector -->
       <select id="languageSelect" aria-label="Select language" style="max-width: 78px;">
         <option value="fr">FR</option>
         <option value="nl">NL</option>
       </select>
     </nav>
+    <p i18n-id="intro"></p>
+    <hr>
     <!-- Form -->
     <form id="fiscForm">
       <label>
@@ -74,7 +76,20 @@
       
       <button i18n-id="btn_calculate" type="submit"></button>
     </form>
-    <output id="result"></output>
+    <output id="result" hidden>
+      <p id="result-text"></p>
+      <button id="btn_share_result">Share result</button>
+    </output>
+    <hr>
+    <small>
+      <span i18n-id="small_footnote_created_by"></span>
+      <a href='https://www.linkedin.com/in/johan-oreel'>Johan Oreel</a>
+      <span i18n-id="small_footnote_based_on"></span>
+      <a id="doc_link"><span i18n-id="small_footnote_official_doc"></span></a>.
+      <span i18n-id="small_footnote_source_code"></span>
+      <!-- Share this link when the project is moved to another Github page -->
+      <a href='https://github.com/Joreel/pwa-calculator-test'>Github</a>.
+    </small>
   </main>
   
   <!-- Translations with i18next -->
