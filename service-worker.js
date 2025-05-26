@@ -5,8 +5,6 @@ const FILES_TO_CACHE = [
   '/downsize.css',
   '/app.js',
   '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
   '/icons/icon-ios.png',
 ];
 
