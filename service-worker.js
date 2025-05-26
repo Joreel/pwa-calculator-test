@@ -4,8 +4,9 @@ const FILES_TO_CACHE = [
   '/index.html',
   '/downsize.css',
   '/app.js',
-  '/manifest.json',
-  '/icons/icon-ios.png',
+  '/manifest.webmanifest',
+  '/icons/icon-android-192.png',
+  '/icons/icon-android-512.png',
 ];
 
 self.addEventListener('install', event => {

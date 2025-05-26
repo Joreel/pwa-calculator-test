@@ -23,9 +23,3 @@ document.getElementById('fiscForm').addEventListener('submit', function (e) {
 window.addEventListener('language-updated', () => {
   calculate(); // will re-translate result
 });
-
-/* PWA code */
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log("Service Worker registered"));
-}

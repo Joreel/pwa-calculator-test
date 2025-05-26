@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" href="icons/favicon.png">
   <link rel="apple-touch-icon" href="icons/icon-ios.png">
 
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="manifest.webmanifest" />
   <!-- Use of pico CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
   <!-- Downsize standard pico CSS style -->
@@ -84,6 +84,14 @@
 
   <!-- Actual calculation -->
   <script src="app.js"></script>
+
+  <!-- Service Worker for PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log("Service Worker registered"));
+    }
+  </script>
 
 </body>
 </html>
