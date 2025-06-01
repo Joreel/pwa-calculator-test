@@ -1,10 +1,13 @@
 import { CompanyCar } from './models/companyCar';
 import { Motor } from './models/motor';
 import i18next from 'i18next';
+import { format } from 'date-fns';
+
+const dateFormat = 'dd.MM.yyyy';
 
 // Calculation code
 function calculate(): void {
-    const value = parseFloat((document.getElementById('catalogValue') as HTMLInputElement).value);
+    const catalogValue = parseFloat((document.getElementById('catalogValue') as HTMLInputElement).value);
     const co2 = parseFloat((document.getElementById('co2') as HTMLInputElement).value);
 
     const motorSelect = document.getElementById('motor') as HTMLSelectElement;
@@ -18,7 +21,7 @@ function calculate(): void {
 
     // TODO show error message
     if (
-        isNaN(value) ||
+        isNaN(catalogValue) ||
         isNaN(co2) ||
         !motorValue ||
         isNaN(fiscalYear) ||
@@ -42,21 +45,52 @@ function calculate(): void {
     // Create CompanyCar instance
     const companyCar = new CompanyCar(
         fiscalYear,
-        value,
+        catalogValue,
         registrationDate,
         motor,
         co2,
         firstDayAtDisposal,
         lastDayAtDisposal
     );
+    const result = companyCar.finalAmount;
+
+    const numberFormat = new Intl.NumberFormat(i18next.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const resultBlocks: string[] = [];
+    resultBlocks.push(i18next.t('result_text', { amount: numberFormat.format(result) }) + "\n");
+    resultBlocks.push(i18next.t('detail_title') + "\n");
+    
+    resultBlocks.push(i18next.t('detail_fiscal_year', { fiscalYear: fiscalYear }));
+    resultBlocks.push(i18next.t('detail_catalog_value', { catalogValue: numberFormat.format(catalogValue) }));
+    resultBlocks.push(i18next.t('detail_registration_date', { registrationDate: format(registrationDate, dateFormat) }));
+    
+    resultBlocks.push(i18next.t('detail_motor', { motor: selectedOption.textContent }));
+    
+    const defaultEmissionStatement = co2 == companyCar.defaultEmission ? i18next.t('detail_default_emission_statement') : '';
+    resultBlocks.push(i18next.t('detail_emission', { emission: co2.toFixed(0), defaultEmissionStatement: defaultEmissionStatement }));
+    
+    resultBlocks.push(i18next.t('detail_first_day_at_disposal', { firstDayAtDisposal: format(companyCar.firstDayEntireUsagePeriod, dateFormat) }));
+    resultBlocks.push(i18next.t('detail_last_day_at_disposal', { lastDayAtDisposal: format(lastDayAtDisposal ?? companyCar.lastDayEntireUsagePeriod, dateFormat) }));
+    
+    
+    // Check if registration date does not start on the first of the month
+    if (companyCar.registrationDate.getDate() !== 1) {
+        resultBlocks.push("\n" + i18next.t('detail_registration_date_correction', { correctedRegistrationDate: format(companyCar.firstDayOfRegistrationMonth, dateFormat) }));
+    }
+    if (lastDayAtDisposal) {
+        resultBlocks.push(i18next.t('detail_last_day_at_disposal_correction', { correctedLastDayAtDisposal: format(companyCar.lastDayEntireUsagePeriod, dateFormat) }));
+    }
+
+    const finalResult = resultBlocks.join('\n'); // This joins each block with two newlines, forcing an empty line between all text blocks
+    console.log(finalResult); // For debugging purposes
 
     // Display the calculated amount
-    const result = companyCar.totalAmount;
-    const translatedResult = i18next.t('result_text', { amount: result.toFixed(2) });
     const resultText = document.getElementById('result-text');
-    if (resultText) resultText.textContent = translatedResult;
+    if (resultText) 
+        resultText.textContent = finalResult;
     const resultDiv = document.getElementById("result");
-    if (resultDiv) resultDiv.hidden = false;
+    if (resultDiv) 
+        resultDiv.hidden = false;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -42,7 +42,11 @@ export class CompanyCar {
     [Motor.electric, CompanyCar.REF_ELECTRIC]
   ]);
 
-  readonly totalAmount: number;
+  readonly finalAmount: number;
+  readonly defaultEmission: number;
+  readonly firstDayOfRegistrationMonth: Date;
+  readonly firstDayEntireUsagePeriod: Date;
+  readonly lastDayEntireUsagePeriod: Date;
 
   constructor(
     readonly fiscalYear: number,
@@ -55,8 +59,8 @@ export class CompanyCar {
   ) {
     const calendarYear = fiscalYear - 1;
 
-    const emissionDefault = CompanyCar.EMISSION_DEFAULT.get(motor);
-    const emission = emissionInput ?? emissionDefault ?? 0; // TODO investigate how to properly handle this case
+    this.defaultEmission = CompanyCar.EMISSION_DEFAULT.get(motor) ?? 0; // TODO investigate how to properly handle this case
+    const emission = emissionInput ?? this.defaultEmission; // TODO investigate how to properly handle this case
 
     const emissionReferenceList = CompanyCar.EMISSION_REFERENCES.get(motor);
     // TODO investigate how to properly handle this case
@@ -69,24 +73,24 @@ export class CompanyCar {
       throw new Error(`No emission reference found for motor ${motor} and year ${calendarYear}`);
     }
 
-    const firstDayOfRegistrationMonth = new Date(registrationDate.getFullYear(), registrationDate.getMonth(), 1);
-    const firstDayEntireUsagePeriod = firstDayAtDisposal ?? new Date(calendarYear, 0, 1);
-    const lastDayEntireUsagePeriod = new Date(
+    this.firstDayOfRegistrationMonth = new Date(registrationDate.getFullYear(), registrationDate.getMonth(), 1);
+    this.firstDayEntireUsagePeriod = firstDayAtDisposal ?? new Date(calendarYear, 0, 1);
+    this.lastDayEntireUsagePeriod = new Date(
       (lastDayAtDisposal ?? new Date(fiscalYear, 0, 1)).getTime() - 86400000
     );
     const pivotDay = new Date(calendarYear, registrationDate.getMonth(), 1);
 
-    const firstDayUsagePeriod1 = firstDayEntireUsagePeriod < pivotDay ? firstDayEntireUsagePeriod : null;
+    const firstDayUsagePeriod1 = this.firstDayEntireUsagePeriod < pivotDay ? this.firstDayEntireUsagePeriod : null;
     const lastDayUsagePeriod1 =
-      lastDayEntireUsagePeriod < pivotDay ? lastDayEntireUsagePeriod :
-      firstDayEntireUsagePeriod < pivotDay ? new Date(pivotDay.getTime() - 86400000) :
+      this.lastDayEntireUsagePeriod < pivotDay ? this.lastDayEntireUsagePeriod :
+      this.firstDayEntireUsagePeriod < pivotDay ? new Date(pivotDay.getTime() - 86400000) :
       null;
 
     const firstDayUsagePeriod2 =
-      pivotDay > lastDayEntireUsagePeriod ? null :
-      pivotDay < firstDayEntireUsagePeriod ? firstDayEntireUsagePeriod : pivotDay;
+      pivotDay > this.lastDayEntireUsagePeriod ? null :
+      pivotDay < this.firstDayEntireUsagePeriod ? this.firstDayEntireUsagePeriod : pivotDay;
 
-    const lastDayUsagePeriod2 = lastDayEntireUsagePeriod > pivotDay ? lastDayEntireUsagePeriod : null;
+    const lastDayUsagePeriod2 = this.lastDayEntireUsagePeriod > pivotDay ? this.lastDayEntireUsagePeriod : null;
 
     const modifierUsagePeriod2 = calendarYear - registrationDate.getFullYear();
     const modifierUsagePeriod1 = modifierUsagePeriod2 - 1;
@@ -117,6 +121,6 @@ export class CompanyCar {
     }
     const minAmount = Math.round(100 * minTheorecticalAmount * totalDays / calendarDays) / 100;
 
-    this.totalAmount = Math.max(totalAmount, minAmount);
+    this.finalAmount = Math.max(totalAmount, minAmount);
   }
 }

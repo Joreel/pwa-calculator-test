@@ -44,7 +44,10 @@ i18next
     resources,
     fallbackLng: 'fr', // TODO Set default language to English?
     lng: 'fr', // Set the default language
-    debug: false
+    debug: false,
+    interpolation: {
+      escapeValue: false // Do not escape interpolation values
+    }
   }, (err) => {
     if (err) return console.error(err);
     updateContent();

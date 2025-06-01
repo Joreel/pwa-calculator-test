@@ -15,7 +15,6 @@
     "lpg": "LPG",
     "gas": "Aardgas",
     "electric": "Elektrisch",
-    "result_text": "Voordeel van alle aard geschat op: €{{amount}}",
     "small_footnote_created_by": "Fisc36 werd gemaakt door ",
     "small_footnote_based_on": " en is gebaseerd op de ",
     "small_footnote_official_doc": "documentatie van de FOD Financiën",
@@ -23,5 +22,8 @@
     "official_doc_link": "https://financien.belgium.be/nl/ondernemingen/personeel_en_loon/voordelen_van_alle_aard/bedrijfswagens",
     "small_hybrid": "Kies bij een hybride motor het overeenstemmend type brandstof",
     "small_false_hybrid": "Opgelet, er gelden speciale regels voor de ",
-    "small_false_hybrid_link_text": "valse hybrides"
+    "small_false_hybrid_link_text": "valse hybrides",
+
+    
+    "result_text": "Voordeel van alle aard geschat op: € {{amount}}"
 }
