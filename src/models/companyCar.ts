@@ -1,6 +1,9 @@
-import { minAmounts, refDiesel, refElectric, refPetrol } from "../constants/referenceValues";
 import { Motor } from "./motor";
 import { UsagePeriod } from "./usagePeriod";
+
+import refPetrolJson from '../referenceTables/refPetrol.json';
+import refDieselJson from '../referenceTables/refDiesel.json';
+import minAmountsJson from '../referenceTables/minAmounts.json';
 
 export class CompanyCar {
   static readonly PCT_EMISSION_BASE = 0.055;
@@ -17,12 +20,33 @@ export class CompanyCar {
     [Motor.electric, 0]
   ]);
 
+  // Copied over from third table in https://finances.belgium.be/sites/default/files/downloads/121-faq-voitures-de-societe-2025.pdf
+  // Minimum amount (in euros) that can be taxed for each fiscal year
+  static readonly MIN_AMOUNTS = new Map<number, number>(Object.entries(minAmountsJson).map(([k, v]) => [Number(k), v as number]));
+  // Copied over from second table in https://finances.belgium.be/sites/default/files/downloads/121-faq-voitures-de-societe-2025.pdf
+  // CO2 emission references for each calendar year for petrol, LPG and natural gas based motor vehicles
+  static readonly REF_PETROL = new Map<number, number>(Object.entries(refPetrolJson).map(([k, v]) => [Number(k), v as number]));
+  // CO2 emission references for each calendar year for diesel motor vehicles
+  static readonly REF_DIESEL = new Map<number, number>(Object.entries(refDieselJson).map(([k, v]) => [Number(k), v as number]));
+  // In case of electric cars, the reference is always 0
+  static readonly REF_ELECTRIC: Map<number, number> = new Proxy(new Map<number, number>(), {
+    get(target, prop) {
+      // Always return 0 for any year (number key)
+      if (typeof prop === "string" && !isNaN(Number(prop))) {
+        return 0;
+      }
+      // Fallback to normal Map behavior for other properties
+      // @ts-ignore
+      return target[prop];
+    }
+  });
+  
   static readonly EMISSION_REFERENCES: Map<Motor, Map<number, number>> = new Map([
-    [Motor.diesel, refDiesel],
-    [Motor.petrol, refPetrol],
-    [Motor.lpg, refPetrol],
-    [Motor.gas, refPetrol],
-    [Motor.electric, refElectric]
+    [Motor.diesel, CompanyCar.REF_DIESEL],
+    [Motor.petrol, CompanyCar.REF_PETROL],
+    [Motor.lpg, CompanyCar.REF_PETROL],
+    [Motor.gas, CompanyCar.REF_PETROL],
+    [Motor.electric, CompanyCar.REF_ELECTRIC]
   ]);
 
   readonly totalAmount: number;
@@ -93,7 +117,7 @@ export class CompanyCar {
 
     const totalAmount = usagePeriod1.amount + usagePeriod2.amount;
     const totalDays = usagePeriod1.days + usagePeriod2.days;
-    const minTheorecticalAmount = minAmounts.get(fiscalYear);
+    const minTheorecticalAmount = CompanyCar.MIN_AMOUNTS.get(fiscalYear);
     // TODO investigate how to properly handle this case
     if (minTheorecticalAmount === undefined) {
       throw new Error(`No minimum amount found for fiscal year ${fiscalYear}`);
