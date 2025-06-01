@@ -31,8 +31,10 @@ function updateContent(): void {
   });
   // Update link to official documentation of calculation details
   const docLink = document.getElementById("doc_link") as HTMLAnchorElement | null;
-  if (docLink) {
-    docLink.href = i18next.t('small_footnote_official_doc_link');
+  const falseHybridLink = document.getElementById("false_hybrid_link") as HTMLAnchorElement | null;
+  if (docLink && falseHybridLink) {
+    docLink.href = i18next.t('official_doc_link');
+    falseHybridLink.href = i18next.t('official_doc_link');
   }
 }
 

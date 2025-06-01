@@ -4,7 +4,7 @@
     "lbl_fiscal_year": "Exercice d'imposition",
     "lbl_catalog_value": "Valeur catalogue (€)",
     "lbl_first_reg": "Première immatriculation",
-    "lbl_engine": "Moteur",
+    "lbl_motor": "Moteur",
     "lbl_co2": "CO₂ (g/km)",
     "lbl_first_day": "Premier jour de mise à disposition",
     "lbl_last_day": "Dernier jour de mise à disposition",
@@ -12,11 +12,16 @@
     "btn_calculate": "Calculer",
     "diesel": "Diesel",
     "petrol": "Essence",
+    "lpg": "LPG",
+    "gas": "Gaz naturel",
     "electric": "Électrique",
     "result_text": "Avantage de toute nature estimé: €{{amount}}",
     "small_footnote_created_by": "Fisc36 fut créé par ",
     "small_footnote_based_on": " et est basé sur la ",
-    "small_footnote_official_doc_link": "https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avantages_toute_nature/voitures_de_societe",
     "small_footnote_official_doc": "documentation du SPF Finances",
-    "small_footnote_source_code": "Le code source est disponible sur "
+    "small_footnote_source_code": "Le code source est disponible sur ",
+    "official_doc_link": "https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avantages_toute_nature/voitures_de_societe",
+    "small_hybrid": "En cas de moteur hybride, choississez le carburant correspondant",
+    "small_false_hybrid": "Attention, des règles speciales s'appliquent pour les ",
+    "small_false_hybrid_link_text": "faux hybrides"
 }

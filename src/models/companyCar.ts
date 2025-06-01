@@ -29,17 +29,10 @@ export class CompanyCar {
   // CO2 emission references for each calendar year for diesel motor vehicles
   static readonly REF_DIESEL = new Map<number, number>(Object.entries(refDieselJson).map(([k, v]) => [Number(k), v as number]));
   // In case of electric cars, the reference is always 0
-  static readonly REF_ELECTRIC: Map<number, number> = new Proxy(new Map<number, number>(), {
-    get(target, prop) {
-      // Always return 0 for any year (number key)
-      if (typeof prop === "string" && !isNaN(Number(prop))) {
-        return 0;
-      }
-      // Fallback to normal Map behavior for other properties
-      // @ts-ignore
-      return target[prop];
-    }
-  });
+  static readonly CALENDAR_YEARS = Array.from(Object.keys(refPetrolJson));
+  static readonly REF_ELECTRIC = new Map<number, number>(
+    CompanyCar.CALENDAR_YEARS.map(year => [Number(year), 0])
+  );
   
   static readonly EMISSION_REFERENCES: Map<Motor, Map<number, number>> = new Map([
     [Motor.diesel, CompanyCar.REF_DIESEL],

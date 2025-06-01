@@ -7,9 +7,9 @@ function calculate(): void {
     const value = parseFloat((document.getElementById('catalogValue') as HTMLInputElement).value);
     const co2 = parseFloat((document.getElementById('co2') as HTMLInputElement).value);
 
-    const engineSelect = document.getElementById('engineType') as HTMLSelectElement;
-    const selectedOption = engineSelect.selectedOptions[0];
-    const engine = selectedOption ? selectedOption.getAttribute('i18n-id') || selectedOption.value : '';
+    const motorSelect = document.getElementById('motor') as HTMLSelectElement;
+    const selectedOption = motorSelect.selectedOptions[0];
+    const motorValue = selectedOption ? selectedOption.getAttribute('i18n-id') || selectedOption.value : '';
     
     const fiscalYear = parseInt((document.getElementById('fiscalYear') as HTMLInputElement).value, 10);
     const registrationDate = new Date((document.getElementById('registrationDate') as HTMLInputElement).value);
@@ -20,12 +20,12 @@ function calculate(): void {
     if (
         isNaN(value) ||
         isNaN(co2) ||
-        !engine ||
+        !motorValue ||
         isNaN(fiscalYear) ||
         isNaN(registrationDate.getTime())
     ) return;
 
-    // Map engine string to Motor enum
+    // Map motor string to Motor enum
     const motorMap: Record<string, Motor> = {
         diesel: Motor.diesel,
         petrol: Motor.petrol,
@@ -33,7 +33,7 @@ function calculate(): void {
         gas: Motor.gas,
         electric: Motor.electric,
     };
-    const motor = motorMap[engine];
+    const motor = motorMap[motorValue];
 
     // Parse optional dates
     const firstDayAtDisposal = firstDayAtDisposalValue ? new Date(firstDayAtDisposalValue) : null;
