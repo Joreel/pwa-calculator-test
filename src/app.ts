@@ -2,8 +2,11 @@ import { CompanyCar } from './models/companyCar';
 import { Motor } from './models/motor';
 import i18next from 'i18next';
 import { format } from 'date-fns';
+import { UsagePeriod } from './models/usagePeriod';
 
 const dateFormat = 'dd.MM.yyyy';
+// TODO Add a format function for pct values 
+// TODO format all numbers with Intl.NumberFormat
 
 // Calculation code
 function calculate(): void {
@@ -11,8 +14,8 @@ function calculate(): void {
     const co2 = parseFloat((document.getElementById('co2') as HTMLInputElement).value);
 
     const motorSelect = document.getElementById('motor') as HTMLSelectElement;
-    const selectedOption = motorSelect.selectedOptions[0];
-    const motorValue = selectedOption ? selectedOption.getAttribute('i18n-id') || selectedOption.value : '';
+    const selectedMotor = motorSelect.selectedOptions[0];
+    const motorValue = selectedMotor ? selectedMotor.getAttribute('i18n-id') || selectedMotor.value : '';
     
     const fiscalYear = parseInt((document.getElementById('fiscalYear') as HTMLInputElement).value, 10);
     const registrationDate = new Date((document.getElementById('registrationDate') as HTMLInputElement).value);
@@ -64,7 +67,7 @@ function calculate(): void {
     resultBlocks.push(i18next.t('detail_catalog_value', { catalogValue: numberFormat.format(catalogValue) }));
     resultBlocks.push(i18next.t('detail_registration_date', { registrationDate: format(registrationDate, dateFormat) }));
     
-    resultBlocks.push(i18next.t('detail_motor', { motor: selectedOption.textContent }));
+    resultBlocks.push(i18next.t('detail_motor', { motor: selectedMotor.textContent }));
     
     const defaultEmissionStatement = co2 == companyCar.defaultEmission ? i18next.t('detail_default_emission_statement') : '';
     resultBlocks.push(i18next.t('detail_emission', { emission: co2.toFixed(0), defaultEmissionStatement: defaultEmissionStatement }));
@@ -72,13 +75,129 @@ function calculate(): void {
     resultBlocks.push(i18next.t('detail_first_day_at_disposal', { firstDayAtDisposal: format(companyCar.firstDayEntireUsagePeriod, dateFormat) }));
     resultBlocks.push(i18next.t('detail_last_day_at_disposal', { lastDayAtDisposal: format(lastDayAtDisposal ?? companyCar.lastDayEntireUsagePeriod, dateFormat) }));
     
-    
     // Check if registration date does not start on the first of the month
     if (companyCar.registrationDate.getDate() !== 1) {
         resultBlocks.push("\n" + i18next.t('detail_registration_date_correction', { correctedRegistrationDate: format(companyCar.firstDayOfRegistrationMonth, dateFormat) }));
     }
+    //
     if (lastDayAtDisposal) {
-        resultBlocks.push(i18next.t('detail_last_day_at_disposal_correction', { correctedLastDayAtDisposal: format(companyCar.lastDayEntireUsagePeriod, dateFormat) }));
+        resultBlocks.push("\n" + i18next.t('detail_last_day_at_disposal_correction', { correctedLastDayAtDisposal: format(companyCar.lastDayEntireUsagePeriod, dateFormat) }));
+    }
+
+    const usagePeriods = [companyCar.usagePeriod1, companyCar.usagePeriod2];
+    usagePeriods.forEach(usagePeriod => {
+        if (usagePeriod.firstDay && usagePeriod.lastDay && usagePeriod.days > 0) {
+            resultBlocks.push("\n" + i18next.t('detail_pct', { 
+                firstDay: format(usagePeriod.firstDay, dateFormat),
+                lastDay: format(usagePeriod.lastDay, dateFormat),
+                pct: (usagePeriod.pctCatalogValue * 100).toFixed(0) // Only round numbers in this case
+            }));
+        }
+    });
+
+    // Emission
+    const moreOrLess = companyCar.emission < companyCar.emissionReference ? i18next.t('detail_less') : i18next.t('detail_more');
+    const plusOrMinus = companyCar.emission < companyCar.emissionReference ? i18next.t('detail_minus') : i18next.t('detail_plus');
+    const defaultEmissionText = companyCar.emission === companyCar.defaultEmission ? i18next.t('detail_default_emission') : '';
+
+    if (companyCar.motor === Motor.electric) {
+        resultBlocks.push("\n" + i18next.t('detail_electric_emissions', {
+            pct: CompanyCar.PCT_EMISSION_MIN * 100
+        }));
+    }
+    else {
+        resultBlocks.push("\n" + i18next.t('detail_emissions_intro', {
+            defaultEmissionText: defaultEmissionText,
+            emission: companyCar.emission,
+            emissionDifference: Math.abs(companyCar.emissionMinusReference),
+            moreOrLess: moreOrLess,
+            emissionReference: companyCar.emissionReference,
+            motor: (selectedMotor.textContent ?? "").toLowerCase(), // TODO smth better?
+        }));
+    
+        resultBlocks.push("\n" + i18next.t('detail_emissions', {
+            pctBaseEmission: CompanyCar.PCT_EMISSION_BASE * 100,
+            plusOrMinus: plusOrMinus,
+            emissionDifference: (Math.abs(companyCar.emissionMinusReference) * 0.1).toFixed(1),
+            pctTheoreticalEmission: (companyCar.pctTheoreticalEmission * 100).toFixed(1), // TODO create a generic function
+        }));
+    };
+
+    // TODO Change the text to link with the previous part "Mais le pourcentage minimum est de 4%."
+    const pctFinalEmission = companyCar.pctFinalEmission * 100;
+
+    if (companyCar.pctTheoreticalEmission > CompanyCar.PCT_EMISSION_MAX) {
+        resultBlocks.push("\n" + i18next.t('detail_min_max_emission', {
+            moreOrLess: i18next.t('detail_more'),
+            minOrMax: i18next.t('detail_max'),
+            pct: pctFinalEmission
+        }));
+    }
+    else if (companyCar.pctTheoreticalEmission < CompanyCar.PCT_EMISSION_MIN) {
+        resultBlocks.push("\n" + i18next.t('detail_min_max_emission', {   
+            moreOrLess: i18next.t('detail_less'),
+            minOrMax: i18next.t('detail_min'), 
+            pct: pctFinalEmission
+        }));
+    }
+
+    // Days
+    usagePeriods.forEach(usagePeriod => {
+        if (usagePeriod.firstDay && usagePeriod.lastDay && usagePeriod.days > 0) {
+            resultBlocks.push("\n" + i18next.t('detail_days_in_period', { 
+                firstDay: format(usagePeriod.firstDay, dateFormat),
+                lastDay: format(usagePeriod.lastDay, dateFormat),
+                days: usagePeriod.days
+            }));
+        }
+    });
+    resultBlocks.push("\n" + i18next.t('detail_days_in_year', { 
+        year: companyCar.calendarYear,
+        days: companyCar.daysInCalendarYear
+    }));
+
+    // Results
+    usagePeriods.forEach(usagePeriod => {
+        if (usagePeriod.firstDay && usagePeriod.lastDay && usagePeriod.days > 0) {
+            resultBlocks.push("\n" + i18next.t('detail_period_result', { 
+                firstDay: format(usagePeriod.firstDay, dateFormat),
+                lastDay: format(usagePeriod.lastDay, dateFormat),
+                catalogValue: companyCar.catalogValue,
+                pctCatalogValue: usagePeriod.pctCatalogValue * 100,
+                numerator: UsagePeriod.NUMERATOR,
+                denominator: UsagePeriod.DENOMINATOR,
+                daysInPeriod: usagePeriod.days,
+                daysInYear: companyCar.daysInCalendarYear, //TODO shouldn't this be an object separate from companyCar?
+                pctEmission: usagePeriod.pctEmission * 100,
+                amount: usagePeriod.amount
+            }));
+        }
+    });
+
+    if (companyCar.usagePeriod1.days > 0 && companyCar.usagePeriod2.days > 0) {
+        resultBlocks.push("\n" + i18next.t('detail_period_result_sum', {
+            year: companyCar.calendarYear,
+            period1Amount: companyCar.usagePeriod1.amount,
+            period2Amount: companyCar.usagePeriod2.amount,
+            totalAmount: companyCar.totalAmount
+        }));
+    }
+
+    const totalDays = 
+        companyCar.usagePeriod1.days > 0 && companyCar.usagePeriod2.days > 0 ? 
+        i18next.t('detail_days_sum', {
+            period1Days: companyCar.usagePeriod1.days,
+            period2Days: companyCar.usagePeriod2.days
+        }) : companyCar.totalDays.toString();
+ 
+    if (companyCar.totalAmount < companyCar.minAmount) {
+        resultBlocks.push("\n" + i18next.t('detail_min_amount', {
+            year: companyCar.fiscalYear,
+            theoreticalMinAmount: companyCar.theoreticalMinAmount,
+            daysInUsage: totalDays,
+            daysInCalendarYear: companyCar.daysInCalendarYear,
+            minAmount: companyCar.minAmount
+        }));
     }
 
     const finalResult = resultBlocks.join('\n'); // This joins each block with two newlines, forcing an empty line between all text blocks

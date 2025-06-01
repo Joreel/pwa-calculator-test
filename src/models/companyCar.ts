@@ -47,6 +47,19 @@ export class CompanyCar {
   readonly firstDayOfRegistrationMonth: Date;
   readonly firstDayEntireUsagePeriod: Date;
   readonly lastDayEntireUsagePeriod: Date;
+  readonly usagePeriod1: UsagePeriod;
+  readonly usagePeriod2: UsagePeriod;
+  readonly emission: number;
+  readonly emissionReference: number;
+  readonly emissionMinusReference: number;
+  readonly pctFinalEmission: number;
+  readonly pctTheoreticalEmission: number;
+  readonly calendarYear: number;
+  readonly daysInCalendarYear: number;
+  readonly totalAmount: number;
+  readonly totalDays: number;
+  readonly minAmount: number;
+  readonly theoreticalMinAmount: number;
 
   constructor(
     readonly fiscalYear: number,
@@ -57,28 +70,28 @@ export class CompanyCar {
     firstDayAtDisposal: Date | null,
     readonly lastDayAtDisposal: Date | null
   ) {
-    const calendarYear = fiscalYear - 1;
+    this.calendarYear = fiscalYear - 1;
 
     this.defaultEmission = CompanyCar.EMISSION_DEFAULT.get(motor) ?? 0; // TODO investigate how to properly handle this case
-    const emission = emissionInput ?? this.defaultEmission; // TODO investigate how to properly handle this case
+    this.emission = emissionInput ?? this.defaultEmission; // TODO investigate how to properly handle this case
 
     const emissionReferenceList = CompanyCar.EMISSION_REFERENCES.get(motor);
     // TODO investigate how to properly handle this case
     if (emissionReferenceList === undefined) {
       throw new Error(`No emission reference list found for motor ${motor}`);
     }
-    const emissionReference = emissionReferenceList.get(calendarYear);
+    this.emissionReference = emissionReferenceList.get(this.calendarYear) ?? 0; // TODO investigate how to properly handle this case
     // TODO investigate how to properly handle this case
-    if (emissionReference === undefined) {
-      throw new Error(`No emission reference found for motor ${motor} and year ${calendarYear}`);
+    if (this.emissionReference === undefined) {
+      throw new Error(`No emission reference found for motor ${motor} and year ${this.calendarYear}`);
     }
 
     this.firstDayOfRegistrationMonth = new Date(registrationDate.getFullYear(), registrationDate.getMonth(), 1);
-    this.firstDayEntireUsagePeriod = firstDayAtDisposal ?? new Date(calendarYear, 0, 1);
+    this.firstDayEntireUsagePeriod = firstDayAtDisposal ?? new Date(this.calendarYear, 0, 1);
     this.lastDayEntireUsagePeriod = new Date(
       (lastDayAtDisposal ?? new Date(fiscalYear, 0, 1)).getTime() - 86400000
     );
-    const pivotDay = new Date(calendarYear, registrationDate.getMonth(), 1);
+    const pivotDay = new Date(this.calendarYear, registrationDate.getMonth(), 1);
 
     const firstDayUsagePeriod1 = this.firstDayEntireUsagePeriod < pivotDay ? this.firstDayEntireUsagePeriod : null;
     const lastDayUsagePeriod1 =
@@ -92,35 +105,35 @@ export class CompanyCar {
 
     const lastDayUsagePeriod2 = this.lastDayEntireUsagePeriod > pivotDay ? this.lastDayEntireUsagePeriod : null;
 
-    const modifierUsagePeriod2 = calendarYear - registrationDate.getFullYear();
+    const modifierUsagePeriod2 = this.calendarYear - registrationDate.getFullYear();
     const modifierUsagePeriod1 = modifierUsagePeriod2 - 1;
 
-    const emissionMinusReference = emission - emissionReference;
-    const pctTheoreticalEmission = CompanyCar.PCT_EMISSION_BASE + CompanyCar.PCT_EMISSION_MOD * emissionMinusReference;
-    const pctFinalEmission = (
-      motor === Motor.electric || pctTheoreticalEmission < CompanyCar.PCT_EMISSION_MIN
+    this.emissionMinusReference = this.emission - this.emissionReference;
+    this.pctTheoreticalEmission = CompanyCar.PCT_EMISSION_BASE + CompanyCar.PCT_EMISSION_MOD * this.emissionMinusReference;
+    this.pctFinalEmission = (
+      motor === Motor.electric || this.pctTheoreticalEmission < CompanyCar.PCT_EMISSION_MIN
         ? CompanyCar.PCT_EMISSION_MIN
-        : pctTheoreticalEmission > CompanyCar.PCT_EMISSION_MAX
+        : this.pctTheoreticalEmission > CompanyCar.PCT_EMISSION_MAX
           ? CompanyCar.PCT_EMISSION_MAX
-          : pctTheoreticalEmission
+          : this.pctTheoreticalEmission
     );
 
-    const calendarDays = (new Date(calendarYear, 11, 31).getDate() === 31) ? 366 : 365;
+    this.daysInCalendarYear = (new Date(this.calendarYear, 11, 31).getDate() === 31) ? 366 : 365;
 
-    const usagePeriod1 = new UsagePeriod(firstDayUsagePeriod1, lastDayUsagePeriod1, modifierUsagePeriod1,
-      catalogValue, calendarDays, pctFinalEmission);
-    const usagePeriod2 = new UsagePeriod(firstDayUsagePeriod2, lastDayUsagePeriod2, modifierUsagePeriod2,
-      catalogValue, calendarDays, pctFinalEmission);
+    this.usagePeriod1 = new UsagePeriod(firstDayUsagePeriod1, lastDayUsagePeriod1, modifierUsagePeriod1,
+      catalogValue, this.daysInCalendarYear, this.pctFinalEmission);
+    this.usagePeriod2 = new UsagePeriod(firstDayUsagePeriod2, lastDayUsagePeriod2, modifierUsagePeriod2,
+      catalogValue, this.daysInCalendarYear, this.pctFinalEmission);
 
-    const totalAmount = usagePeriod1.amount + usagePeriod2.amount;
-    const totalDays = usagePeriod1.days + usagePeriod2.days;
-    const minTheorecticalAmount = CompanyCar.MIN_AMOUNTS.get(fiscalYear);
+    this.totalAmount = this.usagePeriod1.amount + this.usagePeriod2.amount;
+    this.totalDays = this.usagePeriod1.days + this.usagePeriod2.days;
+    this.theoreticalMinAmount = CompanyCar.MIN_AMOUNTS.get(fiscalYear) ?? 0; // TODO investigate how to properly handle this case
     // TODO investigate how to properly handle this case
-    if (minTheorecticalAmount === undefined) {
+    if (this.theoreticalMinAmount === undefined) {
       throw new Error(`No minimum amount found for fiscal year ${fiscalYear}`);
     }
-    const minAmount = Math.round(100 * minTheorecticalAmount * totalDays / calendarDays) / 100;
+    this.minAmount = Math.round(100 * this.theoreticalMinAmount * this.totalDays / this.daysInCalendarYear) / 100;
 
-    this.finalAmount = Math.max(totalAmount, minAmount);
+    this.finalAmount = Math.max(this.totalAmount, this.minAmount);
   }
 }

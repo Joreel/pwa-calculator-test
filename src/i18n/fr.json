@@ -5,9 +5,9 @@
     "lbl_catalog_value": "Valeur catalogue (€)",
     "lbl_first_reg": "Première immatriculation",
     "lbl_motor": "Moteur",
-    "lbl_co2": "CO₂ (g/km)",
-    "lbl_first_day": "Premier jour de mise à disposition",
-    "lbl_last_day": "Dernier jour de mise à disposition",
+    "lbl_co2": "Émission de CO₂ (g/km)",
+    "lbl_first_day": "Premier jour mis à disposition",
+    "lbl_last_day": "Dernier jour mis à disposition",
     "small_required_field": "Champ obligatoire",
     "btn_calculate": "Calculer",
     "diesel": "Diesel",
@@ -32,29 +32,42 @@
     "detail_catalog_value": "Valeur catalogue : {{catalogValue}} €",
     "detail_registration_date": "Première immatriculation : {{registrationDate}}",
     "detail_motor": "Moteur : {{motor}}",
-    "detail_emission": "Emission de CO2 : {{emission}} g/km {{defaultEmissionStatement}}",
+    "detail_emission": "Emission de CO₂ : {{emission}} g/km {{defaultEmissionStatement}}",
     "detail_default_emission_statement": "(valeur par défaut)",
     "detail_first_day_at_disposal": "Premier jour mis à disposition : {{firstDayAtDisposal}}",
     "detail_last_day_at_disposal": "Dernier jour mis à disposition : {{lastDayAtDisposal}}",
+    
     "detail_registration_date_correction": "Le {{correctedRegistrationDate}} est utilisé comme date de première immatriculation parce qu'un mois commencé compte pour un mois entier.",
     "detail_last_day_at_disposal_correction": "Le {{correctedLastDayAtDisposal}} est utilisé comme dernier jour de mis à disposition parce que le dernier jour de la mise à disposition ne peut être compté.",
     
-    "detail_pourcentage_text": "Le pourcentage de la valeur catalogue pour la période du %1$s au %2$s inclus : %3$.0f%%",
-    "detail_emissions_intro": "L'émission de CO2 %1$s(%2$d g/km) est %3$d grammes %4$s à l’émission de CO2 de référence (%5$d g/km) pour un moteur %6$s",
-    "detail_emissions_par_defaut": "par défaut",
-    "detail_emissions_calcul": "Pourcentage-CO2 = %1$.1f%% (pourcentage de base) %2$s (%3$.1f%% x %4$d grammes) = %5$.1f%%",
-    "detail_emissions_electrique": "Pour une voiture exclusivement propulsée par un moteur électrique, avec en conséquence une émission de 0 g/km, il faut appliquer un pourcentage CO2 de %1$.0f%%, à savoir le pourcentage minimum",
-    "detail_emissions_calcul_max": "Pourcentage-CO2 maximum : %1$.0f%%",
-    "detail_emissions_calcul_min": "Pourcentage-CO2 minimum : %1$.0f%%",
-    "detail_nombre_jours_text": "Jours calendrier dans la période du %1$s au %2$s inclus : %3$d jours",
-    "detail_nombre_jours_annee": "Jours calendrier en %1$d : %2$d jours",
-    "detail_calcul_text": "L'avantage pour la période du %1$s au %2$s inclus = %3$,.2f EUR x %4$.0f%% x %5$d/%6$d x %7$d/%8$d x %9$.1f%% = %10$,.2f EUR",
-    "detail_calcul_sum": "L'avantage pour l'année de revenus %1$d = %2$,.2f EUR + %3$,.2f EUR = %4$,.2f EUR",
-    "detail_somme_jours": "(%1$d + %2$d)",
-    "detail_calcul_min": "Mais pour l'année de revenus %1$d, l'avantage ne peut être inférieur à %2$,.2f EUR x %3$s/%4$d, soit %5$,.2f EUR",
-    "detail_superieur": "supérieur",
-    "detail_inferieur": "inférieur",
-    "detail_plus": "+",
-    "detail_moins": "-"
+
+    "detail_pct": "Le pourcentage de la valeur catalogue est de {{pct}} % pour la période du {{firstDay}} au {{lastDay}} inclus.",
+    
+    "detail_more": "supérieur",
+    "detail_less": "inférieur",
+    "detail_plus": "majoré",
+    "detail_minus": "réduit",
+    "detail_default_emission": "par défaut ",
+    
+    "detail_electric_emissions": "Pour une voiture exclusivement propulsée par un moteur électrique, avec en conséquence une émission de 0 g/km, il faut appliquer le pourcentage minumum de {{pct}} %.",
+
+    "detail_emissions_intro": "L'émission de CO₂ {{defaultEmissionText}}({{emission}} g/km) est {{emissionDifference}} g/km {{moreOrLess}} à l’émission de CO₂ de référence pour un moteur {{motor}} ({{emissionReference}} g/km).",
+    "detail_emissions": "C'est pourquoi le pourcentage de base de {{pctBaseEmission}} % doit être {{plusOrMinus}} de {{emissionDifference}} % pour atteindre {{pctTheoreticalEmission}} %.",
+    
+    "detail_min": "minimum",
+    "detail_max": "maximum",
+    "detail_min_max_emission": "Mais il ne peut être {{moreOrLess}} au pourcentage {{minOrMax}} de {{pct}} %.",
+
+    "detail_days_in_period": "Il y a {{days}} jours calendrier dans la période du {{firstDay}} au {{lastDay}} inclus.",
+    "detail_days_in_year": "Il y a {{days}} jours calendrier en {{year}}.",
+    
+
+    "detail_period_result": "L'avantage est de {{amount}} € pour la période du {{firstDay}} au {{lastDay}} inclus ({{catalogValue}} € x {{pctCatalogValue}} % x {{numerator}}/{{denominator}} x {{daysInPeriod}}/{{daysInYear}} x {{pctEmission}} %).",
+    "detail_period_result_sum": "L'avantage est de {{totalAmount}} € pour l'année de revenus {{year}} ({{period1Amount}} € + {{period2Amount}} €).",
+    
+    "detail_days_sum": "({{period1Days}} + {{period2Days}})",
+    "detail_min_amount": "Mais pour l’exercice d’imposition {{year}}, l'avantage ne peut être inférieur à {{minAmount}} € ({{theoreticalMinAmount}} € x {{daysInUsage}}/{{daysInCalendarYear}})."
+    
+    
 }
 
