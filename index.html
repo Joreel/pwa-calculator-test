@@ -13,7 +13,7 @@
     <!-- Use of pico CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
     <!-- Downsize standard pico CSS style -->
-    <script type="module" crossorigin src="/pwa-calculator-test/assets/index-CSn1GbSr.js"></script>
+    <script type="module" crossorigin src="/pwa-calculator-test/assets/index-NDZtr44a.js"></script>
     <link rel="stylesheet" crossorigin href="/pwa-calculator-test/assets/index-CFBuVsp0.css">
   <link rel="manifest" href="/pwa-calculator-test/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/pwa-calculator-test/registerSW.js"></script></head>
   <body>
@@ -66,18 +66,26 @@
           <input id="registrationDate" type="date" required>
         </label>
         <label>
-          <!-- TODO Choose between Motor or Engine for the car nomenclature -->
-          <span i18n-id="lbl_engine"></span>
+          <span i18n-id="lbl_motor"></span>
           <span aria-hidden="true" style="color: var(--pico-primary);">*</span>
-          <select id="engineType">
+          <select id="motor">
             <option i18n-id="petrol"></option>
+            <option i18n-id="lpg"></option>
+            <option i18n-id="gas"></option>
             <option i18n-id="diesel"></option>
             <option i18n-id="electric"></option>
           </select>
+          <small>
+            <span i18n-id="small_hybrid"></span>
+          </small>
         </label>
         <label>
           <span i18n-id="lbl_co2"></span>
           <input id="co2" type="number"  placeholder="0">
+          <small>
+            <span i18n-id="small_false_hybrid"></span>
+            <a id="false_hybrid_link"><span i18n-id="small_false_hybrid_link_text"></span></a>
+          </small>
         </label>
         <label>
           <span i18n-id="lbl_first_day"></span>
