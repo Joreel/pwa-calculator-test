@@ -1,57 +1,17 @@
 import i18next from "i18next";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
+import fr from './fr.json';
+import nl from './nl.json';
 
+// TODO Add English and German
 const resources = {
-  fr: {
-    translation: {
-      title: "Fisc36",
-      intro: "Calculez l'avantage de toute nature d'une voiture de société",
-      lbl_fiscal_year: "Exercice d'imposition",
-      lbl_catalog_value: "Valeur catalogue (€)",
-      lbl_first_reg: "Première immatriculation",
-      lbl_engine: "Moteur",
-      lbl_co2: "CO₂ (g/km)",
-      lbl_first_day: "Premier jour de mise à disposition",
-      lbl_last_day: "Dernier jour de mise à disposition",
-      small_required_field: "Champ obligatoire",
-      btn_calculate: "Calculer",
-      diesel: "Diesel",
-      petrol: "Essence",
-      electric: "Électrique",
-      result_text: "Avantage de toute nature estimé: €{{amount}}",
-      small_footnote_created_by: "Fisc36 fut créé par ",
-      small_footnote_based_on: " et est basé sur la ",
-      small_footnote_official_doc_link: "https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avantages_toute_nature/voitures_de_societe",
-      small_footnote_official_doc: "documentation du SPF Finances",
-      small_footnote_source_code: "Le code source est disponible sur "
-    }
-  },
-  nl: {
-    translation: {
-      title: "Fisc36",
-      intro: "Bereken het voordeel van alle aard van een bedrijfswagen",
-      lbl_fiscal_year: "Aanslagjaar",
-      lbl_catalog_value: "Cataloguswaarde (€)",
-      lbl_first_reg: "Eerste inschrijving",
-      lbl_engine: "Motor",
-      lbl_co2: "CO₂ (g/km)",
-      lbl_first_day: "Eerste dag",
-      lbl_last_day: "Laatse dag",
-      small_required_field: "Verplicht veld",
-      btn_calculate: "Bereken",
-      diesel: "Diesel",
-      petrol: "Benzine",
-      electric: "Elektrisch",
-      result_text: "Voordeel van alle aard geschat op: €{{amount}}",
-      small_footnote_created_by: "Fisc36 werd gemaakt door ",
-      small_footnote_based_on: " en is gebaseerd op de ",
-      small_footnote_official_doc_link: "https://financien.belgium.be/nl/ondernemingen/personeel_en_loon/voordelen_van_alle_aard/bedrijfswagens",
-      small_footnote_official_doc: "documentatie van de FOD Financiën",
-      small_footnote_source_code: "De broncode is beschikbaar op "
-    }
-  }
+  // en: { translation: en }, // Uncomment if you have an English translation
+  nl: { translation: nl },
+  fr: { translation: fr },
+  // de: { translation: de } // Uncomment if you have a German translation
 };
-// TODO Add German?
+
+// TODO Test whether language detection works
 
 function updateContent(): void {
   document.querySelectorAll<HTMLElement>('[i18n-id]').forEach(el => {
@@ -80,7 +40,7 @@ i18next
   .use(i18nextBrowserLanguageDetector)
   .init({
     resources,
-    fallbackLng: 'fr',
+    fallbackLng: 'fr', // TODO Set default language to English?
     lng: 'fr', // Set the default language
     debug: false
   }, (err) => {
@@ -90,7 +50,7 @@ i18next
     // Set dropdown to current language
     const langSelect = document.getElementById('languageSelect') as HTMLSelectElement | null;
     if (langSelect) {
-      langSelect.value = i18next.language || 'fr';
+      langSelect.value = i18next.language || 'fr'; // TODO Set default language to English?
     }
   });
 

@@ -1,0 +1,22 @@
+{
+    "title": "Fisc36",
+    "intro": "Bereken het voordeel van alle aard van een bedrijfswagen",
+    "lbl_fiscal_year": "Aanslagjaar",
+    "lbl_catalog_value": "Cataloguswaarde (€)",
+    "lbl_first_reg": "Eerste inschrijving",
+    "lbl_engine": "Motor",
+    "lbl_co2": "CO₂ (g/km)",
+    "lbl_first_day": "Eerste dag",
+    "lbl_last_day": "Laatse dag",
+    "small_required_field": "Verplicht veld",
+    "btn_calculate": "Bereken",
+    "diesel": "Diesel",
+    "petrol": "Benzine",
+    "electric": "Elektrisch",
+    "result_text": "Voordeel van alle aard geschat op: €{{amount}}",
+    "small_footnote_created_by": "Fisc36 werd gemaakt door ",
+    "small_footnote_based_on": " en is gebaseerd op de ",
+    "small_footnote_official_doc_link": "https://financien.belgium.be/nl/ondernemingen/personeel_en_loon/voordelen_van_alle_aard/bedrijfswagens",
+    "small_footnote_official_doc": "documentatie van de FOD Financiën",
+    "small_footnote_source_code": "De broncode is beschikbaar op "
+}
