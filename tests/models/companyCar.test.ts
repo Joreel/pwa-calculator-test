@@ -51,6 +51,6 @@ test.each(testCases)(
       firstDayAtDisposal,
       lastDayAtDisposal
     );
-    expect(companyCar.totalAmount).toEqual(expectedTotalAmount);
+    expect(companyCar.finalAmount).toEqual(expectedTotalAmount);
   }
 );
