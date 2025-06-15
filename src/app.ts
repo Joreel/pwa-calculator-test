@@ -5,8 +5,10 @@ import { format } from 'date-fns';
 import { UsagePeriod } from './models/usagePeriod';
 
 const dateFormat = 'dd.MM.yyyy';
-// TODO Add a format function for pct values 
-// TODO format all numbers with Intl.NumberFormat
+// Format helper function for pct values 
+function formatPct(value: number, fractionDigits: number): string {
+    return (value * 100).toFixed(fractionDigits);
+}
 
 // Calculation code
 function calculate(): void {
@@ -90,7 +92,7 @@ function calculate(): void {
             resultBlocks.push("\n" + i18next.t('detail_pct', { 
                 firstDay: format(usagePeriod.firstDay, dateFormat),
                 lastDay: format(usagePeriod.lastDay, dateFormat),
-                pct: (usagePeriod.pctCatalogValue * 100).toFixed(0) // Only round numbers in this case
+                pct: formatPct(usagePeriod.pctCatalogValue, 0) // Only round numbers in this case
             }));
         }
     });
@@ -102,7 +104,7 @@ function calculate(): void {
 
     if (companyCar.motor === Motor.electric) {
         resultBlocks.push("\n" + i18next.t('detail_electric_emissions', {
-            pct: CompanyCar.PCT_EMISSION_MIN * 100
+            pct: formatPct(CompanyCar.PCT_EMISSION_MIN, 0) // Only round numbers in this case
         }));
     }
     else {
@@ -116,15 +118,14 @@ function calculate(): void {
         }));
     
         resultBlocks.push("\n" + i18next.t('detail_emissions', {
-            pctBaseEmission: CompanyCar.PCT_EMISSION_BASE * 100,
+            pctBaseEmission: formatPct(CompanyCar.PCT_EMISSION_BASE, 1),
             plusOrMinus: plusOrMinus,
             emissionDifference: (Math.abs(companyCar.emissionMinusReference) * 0.1).toFixed(1),
-            pctTheoreticalEmission: (companyCar.pctTheoreticalEmission * 100).toFixed(1), // TODO create a generic function
+            pctTheoreticalEmission: formatPct(companyCar.pctTheoreticalEmission, 1)
         }));
     };
 
-    // TODO Change the text to link with the previous part "Mais le pourcentage minimum est de 4%."
-    const pctFinalEmission = companyCar.pctFinalEmission * 100;
+    const pctFinalEmission = formatPct(companyCar.pctFinalEmission, 1);
 
     if (companyCar.pctTheoreticalEmission > CompanyCar.PCT_EMISSION_MAX) {
         resultBlocks.push("\n" + i18next.t('detail_min_max_emission', {
@@ -162,14 +163,14 @@ function calculate(): void {
             resultBlocks.push("\n" + i18next.t('detail_period_result', { 
                 firstDay: format(usagePeriod.firstDay, dateFormat),
                 lastDay: format(usagePeriod.lastDay, dateFormat),
-                catalogValue: companyCar.catalogValue,
-                pctCatalogValue: usagePeriod.pctCatalogValue * 100,
+                catalogValue: numberFormat.format(companyCar.catalogValue),
+                pctCatalogValue: formatPct(usagePeriod.pctCatalogValue, 0),
                 numerator: UsagePeriod.NUMERATOR,
                 denominator: UsagePeriod.DENOMINATOR,
                 daysInPeriod: usagePeriod.days,
                 daysInYear: companyCar.daysInCalendarYear, //TODO shouldn't this be an object separate from companyCar?
-                pctEmission: usagePeriod.pctEmission * 100,
-                amount: usagePeriod.amount
+                pctEmission: formatPct(usagePeriod.pctEmission, 1),
+                amount: numberFormat.format(usagePeriod.amount)
             }));
         }
     });
@@ -179,7 +180,7 @@ function calculate(): void {
             year: companyCar.calendarYear,
             period1Amount: companyCar.usagePeriod1.amount,
             period2Amount: companyCar.usagePeriod2.amount,
-            totalAmount: companyCar.totalAmount
+            totalAmount: numberFormat.format(companyCar.totalAmount)
         }));
     }
 
@@ -196,7 +197,7 @@ function calculate(): void {
             theoreticalMinAmount: companyCar.theoreticalMinAmount,
             daysInUsage: totalDays,
             daysInCalendarYear: companyCar.daysInCalendarYear,
-            minAmount: companyCar.minAmount
+            minAmount: numberFormat.format(companyCar.minAmount)
         }));
     }
 
@@ -213,13 +214,13 @@ function calculate(): void {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Calculate the result when the form gets submitted
-const fiscForm = document.getElementById('fiscForm');
+    // Calculate the result when the form gets submitted
+    const fiscForm = document.getElementById('fiscForm');
     if (fiscForm) {
-    fiscForm.addEventListener('submit', function (e: Event) {
-        e.preventDefault();
-        calculate();
-    });
+        fiscForm.addEventListener('submit', function (e: Event) {
+            e.preventDefault();
+            calculate();
+        });
     }
 
     // Recalculate result when the language is updated
@@ -231,28 +232,25 @@ const fiscForm = document.getElementById('fiscForm');
 // Share result logic
 const btnShareResult = document.getElementById("btn_share_result");
 if (btnShareResult) {
-btnShareResult.addEventListener("click", () => {
-    const result = (document.getElementById("result-text") as HTMLElement).textContent || "";
+    btnShareResult.addEventListener("click", () => {
+        const result = (document.getElementById("result-text") as HTMLElement).textContent || "";
 
-    if (navigator.share) {
-    navigator
-        .share({
-        title: "Fisc36 Result",
-        text: result,
-        url: window.location.href,
-        })
-        .catch((err) => console.log("Share cancelled or failed:", err));
-    } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(result).then(() =>
-        alert("Copied to clipboard!")
-    );
-    } else {
-    const subject = "Fisc36 Result";
-    const body = result;
-    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        if (navigator.share) {
+            navigator.share({
+                title: "Fisc36 Result",
+                text: result,
+                url: window.location.href,
+            }).catch((err) => console.log("Share cancelled or failed:", err));
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(result).then(() =>
+                alert("Copied to clipboard!")
+            );
+        } else {
+            const subject = "Fisc36 Result";
+            const body = result;
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            }
+        });
     }
-});
-}
-
 });
 

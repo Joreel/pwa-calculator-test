@@ -1,16 +1,13 @@
 Test Github pages to create a simple PWA
 
 Next steps:
-- Add a dropdown thing to hide details under? User only sees it when pressed?
-- Format all the values properly in the details overview
-- Can the catalog value input take dot and comma values?
+- Allow the catalog value input to take dot and comma values
 - Gray out emissions input and set to 0 whenever electric is chosen
-- Use default emission when input is left empty (remove 0 placeholder?)
+- Use default emission when input is left empty (remove 0 placeholder)
 - Work on input error messages
 - Add Dutch, English and German translations
 - Test out on Android
-- Add Patreon button?
-- Add detailed comments
+- Add detailed code comments
 
 Used technologies:
 - Vite
