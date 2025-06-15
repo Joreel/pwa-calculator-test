@@ -15,7 +15,7 @@
     "lpg": "LPG",
     "gas": "Gaz naturel",
     "electric": "Électrique",
-    "small_footnote_created_by": "Fisc36 fut créé par ",
+    "small_footnote_created_by": "Fisc36 a été créé par ",
     "small_footnote_based_on": " et est basé sur la ",
     "small_footnote_official_doc": "documentation du SPF Finances",
     "small_footnote_source_code": "Le code source est disponible sur ",
@@ -23,11 +23,8 @@
     "small_hybrid": "En cas de moteur hybride, choississez le carburant correspondant",
     "small_false_hybrid": "Attention, des règles speciales s'appliquent pour les ",
     "small_false_hybrid_link_text": "faux hybrides",
-
     "result_text": "Avantage de toute nature: {{amount}} €",
-
     "detail_title": "Détails",
-
     "detail_fiscal_year": "Exercice d'imposition : {{fiscalYear}}",
     "detail_catalog_value": "Valeur catalogue : {{catalogValue}} €",
     "detail_registration_date": "Première immatriculation : {{registrationDate}}",
@@ -36,39 +33,26 @@
     "detail_default_emission_statement": "(valeur par défaut)",
     "detail_first_day_at_disposal": "Premier jour mis à disposition : {{firstDayAtDisposal}}",
     "detail_last_day_at_disposal": "Dernier jour mis à disposition : {{lastDayAtDisposal}}",
-    
     "detail_registration_date_correction": "Le {{correctedRegistrationDate}} est utilisé comme date de première immatriculation parce qu'un mois commencé compte pour un mois entier.",
     "detail_last_day_at_disposal_correction": "Le {{correctedLastDayAtDisposal}} est utilisé comme dernier jour de mis à disposition parce que le dernier jour de la mise à disposition ne peut être compté.",
-    
-
     "detail_pct": "Le pourcentage de la valeur catalogue est de {{pct}} % pour la période du {{firstDay}} au {{lastDay}} inclus.",
-    
     "detail_more": "supérieur",
     "detail_less": "inférieur",
     "detail_plus": "majoré",
     "detail_minus": "réduit",
     "detail_default_emission": "par défaut ",
-    
     "detail_electric_emissions": "Pour une voiture exclusivement propulsée par un moteur électrique, avec en conséquence une émission de 0 g/km, il faut appliquer le pourcentage minumum de {{pct}} %.",
-
     "detail_emissions_intro": "L'émission de CO₂ {{defaultEmissionText}}({{emission}} g/km) est {{emissionDifference}} g/km {{moreOrLess}} à l’émission de CO₂ de référence pour un moteur {{motor}} ({{emissionReference}} g/km).",
     "detail_emissions": "C'est pourquoi le pourcentage de base de {{pctBaseEmission}} % doit être {{plusOrMinus}} de {{emissionDifference}} % pour atteindre {{pctTheoreticalEmission}} %.",
-    
     "detail_min": "minimum",
     "detail_max": "maximum",
     "detail_min_max_emission": "Mais il ne peut être {{moreOrLess}} au pourcentage {{minOrMax}} de {{pct}} %.",
-
     "detail_days_in_period": "Il y a {{days}} jours calendrier dans la période du {{firstDay}} au {{lastDay}} inclus.",
     "detail_days_in_year": "Il y a {{days}} jours calendrier en {{year}}.",
-    
-
     "detail_period_result": "L'avantage est de {{amount}} € pour la période du {{firstDay}} au {{lastDay}} inclus ({{catalogValue}} € x {{pctCatalogValue}} % x {{numerator}}/{{denominator}} x {{daysInPeriod}}/{{daysInYear}} x {{pctEmission}} %).",
     "detail_period_result_sum": "L'avantage est de {{totalAmount}} € pour l'année de revenus {{year}} ({{period1Amount}} € + {{period2Amount}} €).",
-    
     "detail_days_sum": "({{period1Days}} + {{period2Days}})",
     "detail_min_amount": "Mais pour l’exercice d’imposition {{year}}, l'avantage ne peut être inférieur à {{minAmount}} € ({{theoreticalMinAmount}} € x {{daysInUsage}}/{{daysInCalendarYear}}).",
-    
     "btn_share_result": "Partager",
     "btn_reset": "Réinitialiser"
 }
-

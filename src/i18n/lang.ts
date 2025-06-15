@@ -1,18 +1,20 @@
 import i18next from "i18next";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
-import fr from './fr.json';
 import nl from './nl.json';
+import fr from './fr.json';
+import en from './en.json';
+import de from './de.json';
 
-// TODO Add English and German
+
+// TODO Verify all translation 
 const resources = {
-  // en: { translation: en }, // Uncomment if you have an English translation
   nl: { translation: nl },
   fr: { translation: fr },
-  // de: { translation: de } // Uncomment if you have a German translation
+  en: { translation: en },
+  de: { translation: de }
 };
 
 // TODO Test whether language detection works
-
 function updateContent(): void {
   document.querySelectorAll<HTMLElement>('[i18n-id]').forEach(el => {
     const key = el.getAttribute('i18n-id');

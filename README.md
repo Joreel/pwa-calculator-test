@@ -2,7 +2,7 @@ Test Github pages to create a simple PWA
 
 Next steps:
 - Work on input error messages
-- Add Dutch, English and German translations
+- Verify all translations
 - Test out on Android
 - Add detailed code comments
 
