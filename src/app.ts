@@ -124,7 +124,7 @@ function calculate(): void {
         }));
     };
 
-    const pctFinalEmission = formatPct(companyCar.pctFinalEmission, 1);
+    const pctFinalEmission = formatPct(companyCar.pctFinalEmission, 0);
 
     if (companyCar.pctTheoreticalEmission > CompanyCar.PCT_EMISSION_MAX) {
         resultBlocks.push("\n" + i18next.t('detail_min_max_emission', {
@@ -213,7 +213,7 @@ function calculate(): void {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Calculate the result when the form gets submitted
-    const fiscForm = document.getElementById('fiscForm');
+    const fiscForm = document.getElementById('fiscForm') as HTMLFormElement;
     if (fiscForm) {
         fiscForm.addEventListener('submit', function (e: Event) {
             e.preventDefault();
@@ -270,6 +270,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subject = "Fisc36 Result";
                 const body = result;
                 window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            }
+        });
+    }
+
+    // Reset button logic
+    const btnReset = document.getElementById("btn_reset");
+    if (btnReset) {
+        btnReset.addEventListener("click", () => {;
+            if (fiscForm) {
+                fiscForm.reset();
+                const resultDiv = document.getElementById("result");
+                if (resultDiv) {
+                    resultDiv.hidden = true;
+                }
             }
         });
     }

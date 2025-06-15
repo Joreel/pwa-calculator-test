@@ -66,8 +66,9 @@
     "detail_period_result_sum": "L'avantage est de {{totalAmount}} € pour l'année de revenus {{year}} ({{period1Amount}} € + {{period2Amount}} €).",
     
     "detail_days_sum": "({{period1Days}} + {{period2Days}})",
-    "detail_min_amount": "Mais pour l’exercice d’imposition {{year}}, l'avantage ne peut être inférieur à {{minAmount}} € ({{theoreticalMinAmount}} € x {{daysInUsage}}/{{daysInCalendarYear}})."
+    "detail_min_amount": "Mais pour l’exercice d’imposition {{year}}, l'avantage ne peut être inférieur à {{minAmount}} € ({{theoreticalMinAmount}} € x {{daysInUsage}}/{{daysInCalendarYear}}).",
     
-    
+    "btn_share_result": "Partager",
+    "btn_reset": "Réinitialiser"
 }
 

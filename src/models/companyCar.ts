@@ -1,3 +1,5 @@
+import { isLeapYear } from 'date-fns';
+
 import { Motor } from "./motor";
 import { UsagePeriod } from "./usagePeriod";
 
@@ -118,7 +120,7 @@ export class CompanyCar {
           : this.pctTheoreticalEmission
     );
 
-    this.daysInCalendarYear = (new Date(this.calendarYear, 11, 31).getDate() === 31) ? 366 : 365;
+    this.daysInCalendarYear = isLeapYear(new Date(this.calendarYear, 0, 1)) ? 366 : 365;
 
     this.usagePeriod1 = new UsagePeriod(firstDayUsagePeriod1, lastDayUsagePeriod1, modifierUsagePeriod1,
       catalogValue, this.daysInCalendarYear, this.pctFinalEmission);
