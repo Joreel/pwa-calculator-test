@@ -1,7 +1,6 @@
 Test Github pages to create a simple PWA
 
 Next steps:
-- Allow the catalog value input to take dot and comma values
 - Gray out emissions input and set to 0 whenever electric is chosen
 - Use default emission when input is left empty (remove 0 placeholder)
 - Work on input error messages
