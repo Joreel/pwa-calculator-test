@@ -9,7 +9,8 @@ export default defineConfig({
       manifest: {
         name: 'Fisc36',
         short_name: 'Fisc36',
-        start_url: '.',
+        start_url: '/pwa-calculator-test/',
+        scope: '/pwa-calculator-test/',
         display: 'standalone',
         background_color: '#fff',
         theme_color: '#047878',
