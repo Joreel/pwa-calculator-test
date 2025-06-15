@@ -57,7 +57,7 @@
         <label>
           <span i18n-id="lbl_catalog_value"></span>
           <span aria-hidden="true" style="color: var(--pico-primary);">*</span>
-          <input id="catalogValue" type="number" step="any" placeholder="0,00" required>
+          <input id="catalogValue" type="number" step="any" min="0" placeholder="0,00" required>
         </label>
         <label>
           <span i18n-id="lbl_first_reg"></span>
@@ -80,7 +80,7 @@
         </label>
         <label>
           <span i18n-id="lbl_co2"></span>
-          <input id="co2" type="number"  placeholder="0">
+          <input id="co2" type="number" min="0" placeholder="0">
           <small>
             <span i18n-id="small_false_hybrid"></span>
             <a id="false_hybrid_link"><span i18n-id="small_false_hybrid_link_text"></span></a>

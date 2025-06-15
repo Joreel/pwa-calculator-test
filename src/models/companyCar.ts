@@ -73,7 +73,7 @@ export class CompanyCar {
     this.calendarYear = fiscalYear - 1;
 
     this.defaultEmission = CompanyCar.EMISSION_DEFAULT.get(motor) ?? 0; // TODO investigate how to properly handle this case
-    this.emission = emissionInput ?? this.defaultEmission; // TODO investigate how to properly handle this case
+    this.emission = (emissionInput == null || isNaN(emissionInput)) ? this.defaultEmission : emissionInput;
 
     const emissionReferenceList = CompanyCar.EMISSION_REFERENCES.get(motor);
     // TODO investigate how to properly handle this case

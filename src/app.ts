@@ -26,11 +26,10 @@ function calculate(): void {
 
     // TODO show error message
     if (
-        isNaN(catalogValue) ||
-        isNaN(co2) ||
-        !motorValue ||
         isNaN(fiscalYear) ||
-        isNaN(registrationDate.getTime())
+        isNaN(catalogValue) ||
+        isNaN(registrationDate.getTime()) ||
+        !motorValue 
     ) return;
 
     // Map motor string to Motor enum
@@ -71,8 +70,8 @@ function calculate(): void {
     
     resultBlocks.push(i18next.t('detail_motor', { motor: selectedMotor.textContent }));
     
-    const defaultEmissionStatement = co2 == companyCar.defaultEmission ? i18next.t('detail_default_emission_statement') : '';
-    resultBlocks.push(i18next.t('detail_emission', { emission: co2.toFixed(0), defaultEmissionStatement: defaultEmissionStatement }));
+    const defaultEmissionStatement = companyCar.emission == companyCar.defaultEmission ? i18next.t('detail_default_emission_statement') : '';
+    resultBlocks.push(i18next.t('detail_emission', { emission: companyCar.emission.toFixed(0), defaultEmissionStatement: defaultEmissionStatement }));
     
     resultBlocks.push(i18next.t('detail_first_day_at_disposal', { firstDayAtDisposal: format(companyCar.firstDayEntireUsagePeriod, dateFormat) }));
     resultBlocks.push(i18next.t('detail_last_day_at_disposal', { lastDayAtDisposal: format(lastDayAtDisposal ?? companyCar.lastDayEntireUsagePeriod, dateFormat) }));
@@ -202,7 +201,6 @@ function calculate(): void {
     }
 
     const finalResult = resultBlocks.join('\n'); // This joins each block with two newlines, forcing an empty line between all text blocks
-    console.log(finalResult); // For debugging purposes
 
     // Display the calculated amount
     const resultText = document.getElementById('result-text');
@@ -225,30 +223,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Recalculate result when the language is updated
     window.addEventListener('language-updated', () => {
-    calculate(); // will re-translate result
-});
+        calculate(); // will re-translate result
+    });
 
+    // Motor type logic for CO2 field
+    const motorSelect = document.getElementById('motor') as HTMLSelectElement | null;
+    const emissionInput = document.getElementById('co2') as HTMLInputElement | null;
 
-// Share result logic
-const btnShareResult = document.getElementById("btn_share_result");
-if (btnShareResult) {
-    btnShareResult.addEventListener("click", () => {
-        const result = (document.getElementById("result-text") as HTMLElement).textContent || "";
+    if (motorSelect && emissionInput) {
+        const updateEmissionField = () => {
+            const selectedMotor = motorSelect.selectedOptions[0];
+            const motorValue = selectedMotor ? selectedMotor.getAttribute('i18n-id') || selectedMotor.value : '';
+            if (motorValue === 'electric') {
+                emissionInput.value = '0';
+                emissionInput.placeholder = '0';
+                emissionInput.disabled = true;
+            } else if (motorValue === 'diesel') {
+                emissionInput.placeholder = '195';
+                emissionInput.disabled = false;
+            } else {
+                emissionInput.placeholder = '205';
+                emissionInput.disabled = false;
+            }
+        };
+        motorSelect.addEventListener('change', updateEmissionField);
+        updateEmissionField(); // Run once on page load
+    }
 
-        if (navigator.share) {
-            navigator.share({
-                title: "Fisc36 Result",
-                text: result,
-                url: window.location.href,
-            }).catch((err) => console.log("Share cancelled or failed:", err));
-        } else if (navigator.clipboard) {
-            navigator.clipboard.writeText(result).then(() =>
-                alert("Copied to clipboard!")
-            );
-        } else {
-            const subject = "Fisc36 Result";
-            const body = result;
-            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // Share result logic
+    const btnShareResult = document.getElementById("btn_share_result");
+    if (btnShareResult) {
+        btnShareResult.addEventListener("click", () => {
+            const result = (document.getElementById("result-text") as HTMLElement).textContent || "";
+
+            if (navigator.share) {
+                navigator.share({
+                    title: "Fisc36 Result",
+                    text: result,
+                    url: window.location.href,
+                }).catch((err) => console.log("Share cancelled or failed:", err));
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(result).then(() =>
+                    alert("Copied to clipboard!")
+                );
+            } else {
+                const subject = "Fisc36 Result";
+                const body = result;
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             }
         });
     }
